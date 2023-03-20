@@ -5,6 +5,8 @@ import React, { FC } from 'react';
 import styles from './Router.module.scss';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ProductsArea from '../ProductsArea/ProductsArea';
+import ProductDetails from '../ProductsArea/ProductDetails/ProductDetails';
+import AddProduct from '../ProductsArea/AddProduct/AddProduct';
 
 interface RouterProps { }
 
@@ -15,6 +17,14 @@ const Router: FC<RouterProps> = () => (
 
         {/* Products */}
         <Route path="/products" element={<ProductsArea />} />
+
+            {/*product page*/}
+        <Route path="/products/:prodId" element={<ProductDetails />} />
+
+            {/*add product*/}
+        <Route path="/products/new" element={<AddProduct />} />
+
+
 
         {/* About */}
         <Route path="/about" element={<About />} />

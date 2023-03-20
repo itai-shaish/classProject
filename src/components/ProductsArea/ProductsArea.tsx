@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import Product from '../../models/Product';
 import { getProducts } from '../../utils/fetch';
+import Loader from '../Loader/Loader';
 import Products from './Products/Products';
 import styles from './ProductsArea.module.scss';
 
@@ -28,13 +29,10 @@ const ProductsArea: FC<ProductsAreaProps> = () => {
     }, []);
 
 
-
-
-
-
-
-
-    if (isLoading) return <p>...loading</p>
+    if (isLoading){
+         return (<div className={styles.ProductsArea__loaderContainer}>
+             <Loader/>
+         </div>) }
 
     return (
         <div className={styles.ProductsArea}>

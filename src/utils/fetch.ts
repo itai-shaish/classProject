@@ -2,8 +2,6 @@ import axios from 'axios';
 import Product from '../models/Product';
 import { BASE_API_URL } from '../config';
 
-
-
 export const getProducts = async (): Promise<Product[]> => {
     //ajax request
     const response = await axios.get<Product[]>(`${BASE_API_URL}/products`);
@@ -18,9 +16,21 @@ export const getProducts = async (): Promise<Product[]> => {
 
         setTimeout(() => {
             resolve(products)
-        }, 5000);
+        }, 2000);
 
-        
     });
+
+}
+
+export const getProduct = async (id:number): Promise<Product> => {
+
+const response = await axios.get(`${BASE_API_URL}/products/${id}`);
+const product = response.data;
+
+return new Promise((resolve,reject) => {
+    setTimeout(() => {
+        resolve(product)
+    },1500);
+});
 
 }
