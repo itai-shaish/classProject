@@ -1,42 +1,55 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import Product from '../../../models/Product';
 import validation from './validation';
-import styles from './AddProduct.module.scss';
+import styles from './EditProduct.module.scss';
 import FormGroupWithError from '../../FormGroupWithError/FormGroupWithError';
 import Button from '../../Button/Button';
 import Modal from '../../Modal/Modal';
-import { addProduct } from '../../../utils/fetch';
+import { addProduct, updateProduct } from '../../../utils/fetch';
 
-interface AddProductProps {
+interface EditProductProps {
     onClose: () => void;
-    onAddProduct: (product: Product) => void;
+    onEditProduct: (product: Product) => void;
+    product: Product;
 }
 
-//curring
 
 
 
-const AddProduct: FC<AddProductProps> = ({ onClose, onAddProduct }) => {
-    const { register, handleSubmit, formState } = useForm<Product>();
+const EditProduct: FC<EditProductProps> = ({ onClose, onEditProduct, product }) => {
+    const { register, handleSubmit, formState, setValue } = useForm<Product>();
 
     const submitProductHandler = (product: Product) => {
-        addProduct(product).then((_product) => {
-            onAddProduct(_product);
-            onClose();
 
-        }).catch((err) => {
+        updateProduct(product).then(response => {
+            onEditProduct(response);
+            onClose();
+        }).catch(err => {
             console.log(err)
-        });
+        })
+
     }
-    
+
+    console.log('product', product)
+
+    useEffect(() => {
+        setValue("id", product.id);
+        setValue("name", product.name);
+        setValue("price", product.price);
+        setValue("stock", product.stock);
+
+    }, []);
+
 
     return (
 
         <Modal onClose={onClose}>
-            <div className={styles.AddProduct}>
-                <h2>Add Product</h2>
+            <div className={`Box ${styles.EditProduct}`}>
+                <h2>Edit Product </h2>
                 <form onSubmit={handleSubmit(submitProductHandler)} >
+
+                    <input type="hidden" {...register('id')} />
 
                     <FormGroupWithError error={formState.errors.name?.message} >
                         <label>Name:</label>
@@ -60,7 +73,7 @@ const AddProduct: FC<AddProductProps> = ({ onClose, onAddProduct }) => {
 
 
 
-                    <Button>Add</Button>
+                    <Button>Edit</Button>
 
                 </form>
 
@@ -74,7 +87,7 @@ const AddProduct: FC<AddProductProps> = ({ onClose, onAddProduct }) => {
 
 
 
-export default AddProduct;
+export default EditProduct;
 
 
 

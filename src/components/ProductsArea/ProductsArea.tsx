@@ -11,7 +11,7 @@ const ProductsArea: FC<ProductsAreaProps> = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect( () => {
+    useEffect(() => {
 
         setIsLoading(true);
 
@@ -28,15 +28,29 @@ const ProductsArea: FC<ProductsAreaProps> = () => {
 
     }, []);
 
+    const addProductHandler = (product: Product) => {
+        setProducts((prevProducts) => {
+            const productsToUpdate = [...prevProducts];
+            productsToUpdate.push(product);
 
-    if (isLoading){
-         return (<div className={styles.ProductsArea__loaderContainer}>
-             <Loader/>
-         </div>) }
+            return productsToUpdate;
+        });
+    }
+
+
+
+
+    if (isLoading) {
+        return (
+            <div className={styles.ProductsArea__loaderContainer}>
+                <Loader />
+            </div>
+        )
+    }
 
     return (
         <div className={styles.ProductsArea}>
-            <Products products={products} />
+            <Products onAddProduct={addProductHandler} products={products} />
         </div>
     )
 }
